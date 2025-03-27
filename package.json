@@ -10,20 +10,20 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/eslint": "^0.5.2",
-    "@vueuse/core": "^11.0.3",
-    "@vueuse/integrations": "^11.0.3",
+    "@nuxt/eslint": "^1.2.0",
+    "@vueuse/core": "^13.0.0",
+    "@vueuse/integrations": "^13.0.0",
     "cheerio": "^1.0.0",
-    "fuse.js": "^7.0.0",
-    "nuxt": "^3.13.0",
-    "nuxt-quasar-ui": "^2.1.4",
+    "fuse.js": "^7.1.0",
+    "nuxt": "^3.16.1",
+    "nuxt-quasar-ui": "^2.1.12",
     "vue": "latest"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-vue": "^9.27.0",
-    "prettier": "^3.3.3"
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-vue": "^10.0.0",
+    "prettier": "^3.5.3"
   }
 }

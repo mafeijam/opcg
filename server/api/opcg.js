@@ -219,7 +219,7 @@ function group(all) {
     carry[key].get ??= new Set()
 
     carry[key].alt.push(alt)
-    carry[key].img.push([item.img, item.get, alt, item.rare])
+    carry[key].img.push([item.img, item.get, alt || item.rare === 'SP卡', item.rare])
     carry[key].get.add(item.get)
 
     delete item.img
@@ -236,8 +236,8 @@ function group(all) {
     val = val.replace('-', '0')
     g.data.cost = [key, val]
 
-    g.alt = g.alt.some(Boolean)
     g.sp = g.img.some(i => i[3] === 'SP卡')
+    g.alt = g.alt.some(Boolean) || g.sp
     g.rare = [...new Set(g.img.map(i => i[3]).flat())]
 
     const rareIndex = g.rare.indexOf('SP卡')

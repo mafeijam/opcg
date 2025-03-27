@@ -4,6 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['nuxt-quasar-ui', '@nuxt/eslint'],
 
+  ssr: false,
+
   nitro: {
     storage: {
       db: {

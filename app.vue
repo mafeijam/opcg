@@ -290,21 +290,44 @@ function onDialogHide() {
   window?.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-const query = ref('')
-const selectedType = ref([])
-const selectedColor = ref([])
-const selectedEffect = ref(null)
-const selectedFeature = ref(null)
-const selectedRare = ref(null)
+const query = useCookie('selected-query')
+query.value = query.value || ''
 
-const selectedCounter = ref(makeRange(data.value.meta.counter))
-const selectedLife = ref(makeRange(data.value.meta.life))
-const selectedCost = ref(makeRange(data.value.meta.cost))
-const selectedPower = ref(makeRange(data.value.meta.power))
+const selectedType = useCookie('selected-type')
+selectedType.value = selectedType.value || []
 
-const alt = ref(false)
-const trigger = ref(false)
-const favToggle = ref(false)
+const selectedColor = useCookie('selected-color')
+selectedColor.value = selectedColor.value || []
+
+const selectedEffect = useCookie('selected-effect')
+selectedEffect.value = selectedEffect.value || null
+
+const selectedFeature = useCookie('selected-feature')
+selectedFeature.value = selectedFeature.value || null
+
+const selectedRare = useCookie('selected-rare')
+selectedRare.value = selectedRare.value || null
+
+const selectedCounter = useCookie('selected-counter')
+selectedCounter.value = selectedCounter.value || makeRange(data.value.meta.counter)
+
+const selectedLife = useCookie('selected-life')
+selectedLife.value = selectedLife.value || makeRange(data.value.meta.life)
+
+const selectedCost = useCookie('selected-cost')
+selectedCost.value = selectedCost.value || makeRange(data.value.meta.cost)
+
+const selectedPower = useCookie('selected-power')
+selectedPower.value = selectedPower.value || makeRange(data.value.meta.power)
+
+const alt = useCookie('alt-toggle')
+alt.value = alt.value || false
+
+const trigger = useCookie('trigger-toggle')
+trigger.value = trigger.value || false
+
+const favToggle = useCookie('fav-toggle')
+favToggle.value = favToggle.value || false
 
 function resetQuery() {
   query.value = ''
@@ -457,7 +480,13 @@ const items = computed(() => {
     })
 })
 
+const shouldWatchItems = ref(true)
+
 watch(items, _val => {
+  if (!shouldWatchItems.value) {
+    return
+  }
+
   page.value = 1
   window?.scrollTo({ top: 0, behavior: 'smooth' })
 })
@@ -467,22 +496,32 @@ onMounted(async () => {
   stock.value = await $fetch('/api/opcg-stock')
 })
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 async function addFav(card) {
+  shouldWatchItems.value = false
   favs.value = await $fetch('/api/opcg-fav', {
     method: 'POST',
     body: {
       card,
     },
   })
+  await sleep(500)
+  shouldWatchItems.value = true
 }
 
 async function addStock(card) {
+  shouldWatchItems.value = false
   stock.value = await $fetch('/api/opcg-stock', {
     method: 'POST',
     body: {
       card,
     },
   })
+  await sleep(500)
+  shouldWatchItems.value = true
 }
 
 useHead({
