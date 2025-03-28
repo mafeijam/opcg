@@ -86,7 +86,7 @@
               />
             </div>
 
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-3">
               <FilterSelect
                 v-model="selectedEffect"
                 label="效果"
@@ -98,7 +98,7 @@
               />
             </div>
 
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-3">
               <FilterSelect
                 v-model="selectedFeature"
                 label="特徵"
@@ -111,7 +111,20 @@
               />
             </div>
 
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-3">
+              <FilterSelect
+                v-model="selectedAttr"
+                label="屬性"
+                use-input
+                use-chips
+                clearable
+                multiple
+                outlined
+                :options="data.meta.attr"
+              />
+            </div>
+
+            <div class="col-12 col-md-3">
               <FilterSelect
                 v-model="selectedRare"
                 label="稀有度"
@@ -293,41 +306,22 @@ function onDialogHide() {
 const query = useCookie('selected-query')
 query.value = query.value || ''
 
-const selectedType = useCookie('selected-type')
-selectedType.value = selectedType.value || []
+const selectedType = useCookieState('selected-type', [])
+const selectedColor = useCookieState('selected-color', [])
 
-const selectedColor = useCookie('selected-color')
-selectedColor.value = selectedColor.value || []
+const selectedEffect = useCookieState('selected-effect')
+const selectedFeature = useCookieState('selected-feature')
+const selectedAttr = useCookieState('selected-attr')
+const selectedRare = useCookieState('selected-rare')
 
-const selectedEffect = useCookie('selected-effect')
-selectedEffect.value = selectedEffect.value || null
+const selectedCounter = useCookieState('selected-counter', makeRange(data.value.meta.counter))
+const selectedLife = useCookieState('selected-life', makeRange(data.value.meta.life))
+const selectedCost = useCookieState('selected-cost', makeRange(data.value.meta.cost))
+const selectedPower = useCookieState('selected-power', makeRange(data.value.meta.power))
 
-const selectedFeature = useCookie('selected-feature')
-selectedFeature.value = selectedFeature.value || null
-
-const selectedRare = useCookie('selected-rare')
-selectedRare.value = selectedRare.value || null
-
-const selectedCounter = useCookie('selected-counter')
-selectedCounter.value = selectedCounter.value || makeRange(data.value.meta.counter)
-
-const selectedLife = useCookie('selected-life')
-selectedLife.value = selectedLife.value || makeRange(data.value.meta.life)
-
-const selectedCost = useCookie('selected-cost')
-selectedCost.value = selectedCost.value || makeRange(data.value.meta.cost)
-
-const selectedPower = useCookie('selected-power')
-selectedPower.value = selectedPower.value || makeRange(data.value.meta.power)
-
-const alt = useCookie('alt-toggle')
-alt.value = alt.value || false
-
-const trigger = useCookie('trigger-toggle')
-trigger.value = trigger.value || false
-
-const favToggle = useCookie('fav-toggle')
-favToggle.value = favToggle.value || false
+const alt = useCookieState('alt-toggle', false)
+const trigger = useCookieState('trigger-toggle', false)
+const favToggle = useCookieState('fav-toggle', false)
 
 function resetQuery() {
   query.value = ''
@@ -335,6 +329,7 @@ function resetQuery() {
   selectedColor.value = []
   selectedEffect.value = null
   selectedFeature.value = null
+  selectedAttr.value = null
   selectedRare.value = null
   selectedCounter.value = makeRange(data.value.meta.counter)
   selectedLife.value = makeRange(data.value.meta.life)
@@ -355,6 +350,7 @@ const fuseQuery = computed(() => {
     query: query.value,
     type: [...(selectedType.value ? selectedType.value : [])].join('|'),
     feature: joinValue(selectedFeature.value),
+    attr: joinValue(selectedAttr.value),
     color: joinValue(selectedColor.value),
     effect: joinValue(selectedEffect.value),
     rare: joinValue(selectedRare.value),
@@ -377,6 +373,10 @@ const items = computed(() => {
       {
         name: 'feature',
         getFn: item => item.data.feature,
+      },
+      {
+        name: 'attr',
+        getFn: item => item.data.attr,
       },
       {
         name: 'color',

@@ -40,16 +40,12 @@ const filterAlt = computed(() => {
   return props.images.filter(img => {
     const cond = [img[3] === 'SP卡', !!img[2]]
 
-    if (props.sp && props.alt) {
-      return cond.some(Boolean)
-    }
-
     if (props.sp) {
       return cond[0]
     }
 
-    if (props.alt) {
-      return cond[1]
+    if (props.alt || (props.sp && props.alt)) {
+      return cond.some(Boolean)
     }
 
     return true
