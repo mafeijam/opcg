@@ -49,6 +49,7 @@ export default defineEventHandler(async event => {
   const features = getMeta(res, 'feature')
   const attr = getMeta(res, 'attr').filter(f => f !== '-')
   const colors = getMeta(res, 'color')
+  const block = getMeta(res, 'block')
   const power = getMeta(res, 'power')
   const counter = getMeta(res, 'counter')
   const rare = [...new Set(res.map(f => f.rare).flat())].sort((a, b) =>
@@ -70,6 +71,7 @@ export default defineEventHandler(async event => {
       alt,
       get,
       colors,
+      block,
       power,
       counter,
       rare,
@@ -142,6 +144,7 @@ async function getData(series, clear) {
         .toArray()
       const cost = getContents(el, '.cost')
       const color = getContents(el, '.color')[1].split('/')
+      const block = getContents(el, '.block')[1]
       const attr = $(el).find('.attribute').find('img').prop('alt')?.split('/') || '-'
       const feature = getContents(el, '.feature')[1].split('/')
       const power = getContents(el, '.power')[1]
@@ -188,6 +191,7 @@ async function getData(series, clear) {
 
           return c
         }, []),
+        block,
         power: power.replace('-', '0'),
         counter: counter.replace('-', '0'),
         effect,

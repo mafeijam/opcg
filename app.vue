@@ -86,7 +86,7 @@
               />
             </div>
 
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <FilterSelect
                 v-model="selectedEffect"
                 label="效果"
@@ -98,7 +98,7 @@
               />
             </div>
 
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <FilterSelect
                 v-model="selectedFeature"
                 label="特徵"
@@ -111,7 +111,7 @@
               />
             </div>
 
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <FilterSelect
                 v-model="selectedAttr"
                 label="屬性"
@@ -124,7 +124,7 @@
               />
             </div>
 
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <FilterSelect
                 v-model="selectedRare"
                 label="稀有度"
@@ -135,6 +135,20 @@
                 :options="data.meta.rare"
               />
             </div>
+
+            <div class="col-12 col-md-4">
+              <FilterSelect
+                v-model="selectedBlock"
+                label="擴張記號"
+                use-chips
+                clearable
+                multiple
+                outlined
+                :options="data.meta.block"
+              />
+            </div>
+
+            <div class="col-12 col-md-4" />
 
             <div class="col-6 col-md-3">
               <QToggle v-model="alt" label="異畫" class="q-mr-md text-subtitle1" color="orange-8" />
@@ -313,6 +327,7 @@ const selectedEffect = useCookieState('selected-effect')
 const selectedFeature = useCookieState('selected-feature')
 const selectedAttr = useCookieState('selected-attr')
 const selectedRare = useCookieState('selected-rare')
+const selectedBlock = useCookieState('selected-block')
 
 const selectedCounter = useCookieState('selected-counter', makeRange(data.value.meta.counter))
 const selectedLife = useCookieState('selected-life', makeRange(data.value.meta.life))
@@ -354,6 +369,7 @@ const fuseQuery = computed(() => {
     color: joinValue(selectedColor.value),
     effect: joinValue(selectedEffect.value),
     rare: joinValue(selectedRare.value),
+    block: joinValue(selectedBlock.value),
   }
 
   return Object.fromEntries(Object.entries(search).filter(([_k, v]) => Boolean(v)))
@@ -389,6 +405,10 @@ const items = computed(() => {
       {
         name: 'rare',
         getFn: item => item.rare,
+      },
+      {
+        name: 'block',
+        getFn: item => item.data.block,
       },
     ],
     threshold: 0.1,
